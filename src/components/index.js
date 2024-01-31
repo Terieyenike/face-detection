@@ -1,4 +1,5 @@
 import { Navigation } from "./Navigation";
-import { Logo } from "./Logo";
+import { Logo } from "./Logo/Logo";
+import { ImageLinkForm } from "./ImageLinkForm/ImageLinkForm";
 
-export { Navigation, Logo };
+export { Navigation, Logo, ImageLinkForm };

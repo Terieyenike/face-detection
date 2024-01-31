@@ -1,12 +1,12 @@
-import { Navigation, Logo } from "./components";
+import { Navigation, Logo, ImageLinkForm } from "./components";
+import "./App.css";
 
 const App = () => {
   return (
     <div>
       <Navigation />
       <Logo />
-      {/*<ImageLinkForm />*/}
-      {/*<FaceRecognition />*/}
+      <ImageLinkForm />
     </div>
   );
 }
