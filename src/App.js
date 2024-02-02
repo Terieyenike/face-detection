@@ -1,17 +1,17 @@
 import { useState } from "react";
-import { Navigation, Logo, ImageLinkForm, Rank, FaceRecognition } from "./components";
+import { Navigation, Logo, ImageLinkForm, Rank, FaceRecognition, Signin, Register, } from "./components";
 import "./App.css";
 
 const App = () => {
   const [input, setInput] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [box, setBox] = useState({});
+  const [route, setRoute] = useState("signin");
+  const [isSignedIn, setIsSignedIn] = useState(false);
 
   const onInputChange = (event) => {
     setInput(event.target.value);
-
   }
-
 
   const returnClarifaiRequestOptions = (imageUrl) => {
     const PAT = '5cc6cc83980148c2915ab62c20ea1e6a';
@@ -75,13 +75,30 @@ const onButtonSubmit = async () => {
   }
 }
 
+const onRouteChange = (route) => {
+  if(route === "signout") {
+    setIsSignedIn(false)
+  } else if (route === "home") {
+    setIsSignedIn(true)
+  }
+  setRoute(route)
+}
+
   return (
     <div className="App">
-      <Navigation />
-      <Logo />
-      <Rank />
-      <ImageLinkForm onInputChange={onInputChange} onButtonSubmit={onButtonSubmit} />
-      <FaceRecognition imageUrl={imageUrl} box={box} />
+      <Navigation onRouteChange={onRouteChange} isSignedIn={isSignedIn} />
+      {route === "home" ?
+      <div>
+        <Logo />
+        <Rank />
+        <ImageLinkForm onInputChange={onInputChange} onButtonSubmit={onButtonSubmit} />
+        <FaceRecognition imageUrl={imageUrl} box={box} />
+      </div> : (
+        route === "signin" ?
+        <Signin onRouteChange={onRouteChange} />
+        : <Register onRouteChange={onRouteChange} />
+      )
+      }
     </div>
   );
 }
