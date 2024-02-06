@@ -82,6 +82,10 @@ const displayFaceBox = (box) => {
 }
 
 const onPictureSubmit = async () => {
+  if (!input) {
+    alert("Please enter a valid image URL");
+    return;
+  }
   try {
     setImageUrl(input);
     const response = await fetch(`https://api.clarifai.com/v2/models/face-detection/outputs`, returnClarifaiRequestOptions(input))
@@ -94,7 +98,7 @@ const onPictureSubmit = async () => {
         })
       }).then(response => response.json())
       .then(count => {
-        setUser(Object.assign(user, { entries: count}))
+        setUser(prevUser => ({ ...prevUser, entries: count }));
       })
     }
     const result = await response.json()
