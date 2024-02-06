@@ -2,11 +2,13 @@ import { useState } from "react";
 import { Navigation, Logo, ImageLinkForm, Rank, FaceRecognition, Signin, Register, } from "./components";
 import "./App.css";
 
+
 const App = () => {
   const [input, setInput] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [box, setBox] = useState({});
   const [route, setRoute] = useState("signin");
+  const [errorMessage, setErrorMessage] = useState("")
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [user, setUser] = useState({
     id: "",
@@ -16,7 +18,15 @@ const App = () => {
     joined: ""
   })
 
+  const resetState = () => {
+    setInput("");
+    setImageUrl("");
+    setBox({});
+    setErrorMessage("");
+  };
+
   const loadUser = (data) => {
+    resetState()
     setUser({
       id: data.id,
       name: data.name,
@@ -83,7 +93,7 @@ const displayFaceBox = (box) => {
 
 const onPictureSubmit = async () => {
   if (!input) {
-    alert("Please enter a valid image URL");
+    setErrorMessage("Please enter a valid image URL")
     return;
   }
   try {
@@ -100,6 +110,7 @@ const onPictureSubmit = async () => {
       .then(count => {
         setUser(prevUser => ({ ...prevUser, entries: count }));
       })
+      .catch(error => console.log(error))
     }
     const result = await response.json()
     displayFaceBox(calculateFaceLocation(result))
@@ -111,6 +122,7 @@ const onPictureSubmit = async () => {
 const onRouteChange = (route) => {
   if(route === "signout") {
     setIsSignedIn(false)
+    resetState()
   } else if (route === "home") {
     setIsSignedIn(true)
   }
@@ -124,7 +136,7 @@ const onRouteChange = (route) => {
       <div>
         <Logo />
         <Rank name={user.name} entries={user.entries} />
-        <ImageLinkForm onInputChange={onInputChange} onPictureSubmit={onPictureSubmit} />
+        <ImageLinkForm onInputChange={onInputChange} onPictureSubmit={onPictureSubmit} errorMessage={errorMessage} />
         <FaceRecognition imageUrl={imageUrl} box={box} />
       </div> : (
         route === "signin" ?
