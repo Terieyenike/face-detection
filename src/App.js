@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Navigation, Logo, ImageLinkForm, Rank, FaceRecognition, Signin, Register, } from "./components";
 import "./App.css";
 
-
 const App = () => {
   const [input, setInput] = useState("");
   const [imageUrl, setImageUrl] = useState("");
@@ -41,7 +40,7 @@ const App = () => {
   }
 
   const returnClarifaiRequestOptions = (imageUrl) => {
-    const PAT = '5cc6cc83980148c2915ab62c20ea1e6a';
+    const PAT = process.env.REACT_APP_PAT;
     const USER_ID = 'clarifai';
     const APP_ID = 'main';
     const IMAGE_URL = imageUrl
@@ -96,6 +95,7 @@ const onPictureSubmit = async () => {
     setErrorMessage("Please enter a valid image URL")
     return;
   }
+
   try {
     setImageUrl(input);
     const response = await fetch(`https://api.clarifai.com/v2/models/face-detection/outputs`, returnClarifaiRequestOptions(input))
