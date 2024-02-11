@@ -2,7 +2,7 @@ import { signOut } from "@junobuild/core"
 
 const Logout = () => {
   return (
-    <div>
+    <div className="fr absolute top-0 left-0 w-100">
       <button type="button" onClick={signOut} className="mt5">
         <div>
           <svg
