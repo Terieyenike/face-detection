@@ -1,12 +1,20 @@
-import { useState } from "react";
-import { Logo, ImageLinkForm, FaceRecognition } from "./components";
+import { useState, useEffect } from "react";
+import { Logo, ImageLinkForm, FaceRecognition, Auth } from "./components";
 import "./App.css";
+import { initJuno } from "@junobuild/core";
 
 const App = () => {
   const [input, setInput] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [box, setBox] = useState({});
   const [errorMessage, setErrorMessage] = useState("")
+
+  useEffect(() => {
+    (async () =>
+      await initJuno({
+        satelliteId: "drhxq-dqaaa-aaaal-adsqa-cai",
+      }))();
+  }, []);
 
   const onInputChange = (event) => {
     setInput(event.target.value);
@@ -15,7 +23,7 @@ const App = () => {
 
 
   const returnClarifaiRequestOptions = (imageUrl) => {
-    const PAT = '5cc6cc83980148c2915ab62c20ea1e6a';
+    const PAT = process.env.REACT_APP_PAT;
     const USER_ID = 'clarifai';
     const APP_ID = 'main';
     const IMAGE_URL = imageUrl
@@ -83,8 +91,13 @@ const onPictureSubmit = async () => {
   return (
     <div className="App">
       <Logo />
-      <ImageLinkForm onInputChange={onInputChange} onPictureSubmit={onPictureSubmit} errorMessage={errorMessage} />
-      <FaceRecognition imageUrl={imageUrl} box={box} />
+      <div>
+        <p>face detection app</p>
+      </div>
+      <Auth>
+        <ImageLinkForm onInputChange={onInputChange} onPictureSubmit={onPictureSubmit} errorMessage={errorMessage} />
+        <FaceRecognition imageUrl={imageUrl} box={box} />
+      </Auth>
     </div>
   );
 }
