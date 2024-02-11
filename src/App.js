@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Navigation, Logo, ImageLinkForm, Rank, FaceRecognition } from "./components";
+import { Logo, ImageLinkForm, FaceRecognition } from "./components";
 import "./App.css";
 
 const App = () => {
   const [input, setInput] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [box, setBox] = useState({});
+  const [errorMessage, setErrorMessage] = useState("")
 
   const onInputChange = (event) => {
     setInput(event.target.value);
@@ -64,7 +65,11 @@ const displayFaceBox = (box) => {
   setBox(box)
 }
 
-const onButtonSubmit = async () => {
+const onPictureSubmit = async () => {
+  if (!input) {
+    setErrorMessage("Please enter a valid image URL")
+    return;
+  }
   try {
     setImageUrl(input);
     const response = await fetch(`https://api.clarifai.com/v2/models/face-detection/outputs`, returnClarifaiRequestOptions(input))
@@ -77,10 +82,8 @@ const onButtonSubmit = async () => {
 
   return (
     <div className="App">
-      <Navigation />
       <Logo />
-      <Rank />
-      <ImageLinkForm onInputChange={onInputChange} onButtonSubmit={onButtonSubmit} />
+      <ImageLinkForm onInputChange={onInputChange} onPictureSubmit={onPictureSubmit} errorMessage={errorMessage} />
       <FaceRecognition imageUrl={imageUrl} box={box} />
     </div>
   );
