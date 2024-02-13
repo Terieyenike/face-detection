@@ -1,4 +1,4 @@
-# Face Detection with Clarifai
+# Web3 dApp Face Detection App with Clarifai
 
 This app uses Clarifai API to detect the location of human faces in images.
 
@@ -16,6 +16,12 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
+
+## Technology
+
+- React
+- Tachyons
+- [Juno](https://juno.build/)
 
 ## Author
 
